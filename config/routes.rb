@@ -1,6 +1,6 @@
 Spree::Core::Engine.routes.draw do
   if (
-    Spree::Auth::Engine.frontend_available? &&
+    SolidusSupport.frontend_available? &&
     Spree::Auth::Config.draw_frontend_routes
   )
 
@@ -22,7 +22,7 @@ Spree::Core::Engine.routes.draw do
     devise_scope :spree_user do
       get '/login', to: 'user_sessions#new', as: :login
       post '/login', to: 'user_sessions#create', as: :create_new_session
-      get '/logout', to: 'user_sessions#destroy', as: :logout
+      match '/logout', to: 'user_sessions#destroy', as: :logout, via: Devise.sign_out_via
       get '/signup', to: 'user_registrations#new', as: :signup
       post '/signup', to: 'user_registrations#create', as: :registration
       get '/password/recover', to: 'user_passwords#new', as: :recover_password
@@ -39,7 +39,7 @@ Spree::Core::Engine.routes.draw do
   end
 
   if (
-    Spree::Auth::Engine.backend_available? &&
+    SolidusSupport.backend_available? &&
     Spree::Auth::Config.draw_backend_routes
   )
 

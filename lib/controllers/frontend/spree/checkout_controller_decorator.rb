@@ -1,11 +1,12 @@
 Spree::CheckoutController.class_eval do
   prepend_before_action :check_registration,
-    except: [:registration, :update_registration]
-  prepend_before_action :check_authorization
+    except: [:registration, :update_registration],
+    raise: false
+  prepend_before_action :check_authorization, raise: false
 
   # This action builds some associations on the order, ex. addresses, which we
   # don't to build or save here.
-  skip_before_action :setup_for_current_state, only: [:registration, :update_registration]
+  skip_before_action :setup_for_current_state, only: [:registration, :update_registration], raise: false
 
   def registration
     @user = Spree::User.new
